@@ -15,6 +15,9 @@ CleanedStrains("LOCAL_FILE_PATH.csv").clean_crop_save("CLEAN_LOCAL_FILE_PATH.csv
 # Scrape storefront data and save locally
 WeedmapsStorefronts().scrape_to_csv("ANOTHER_LOCAL_FILE_PATH.csv")
 
+# Scrape delivery data and save locally
+WeedmapsDeliveries().scrape_to_csv("YET_ANOTHER_LOCAL_FILE_PATH.csv")
+
 ```
 
 
