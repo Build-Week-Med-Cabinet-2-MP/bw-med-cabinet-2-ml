@@ -69,4 +69,18 @@ class CleanedStrains():
     self.intermediate_merge_df = pd.merge(self.cropped_df, self.cropped_df_flavors, on='name')
     self.merged_results = pd.merge(self.intermediate_merge_df, self.cropped_df_effects, on="name")
 
-    self.merged_results.to_csv(self.output_filepath, index=False)
+    self.columns_to_drop = ["slug","genetic_cultivation_description","references","hero_image_attribution","lab_data_attribution",
+                            "thc_min","thc_max","cbd_min","cbd_max","featured_position","featured","avatar_image_url",
+                            "hero_image_url","aliases","effects","flavors","effects_cleaned","flavors_cleaned"]
+
+    self.dropped_df = self.merged_results.drop(columns=self.columns_to_drop)
+
+    self.species_df = pd.DataFrame(OneHotEncoder().fit_transform(self.dropped_df["species"].values.reshape(-1,1)).toarray())
+    self.species_df.columns = self.dropped_df["species"].value_counts().index.tolist()
+    self.species_df.columns = [column.title() for column in self.species_df.columns]
+    self.species_df = self.species_df.astype(int)
+    self.species_df["name"] = self.dropped_df["name"].copy()
+
+    self.merged_df = pd.merge(self.dropped_df.drop(columns="species"), self.species_df, on="name")
+
+    self.merged_df.to_csv(self.output_filepath, index=False)
