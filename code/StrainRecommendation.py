@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 
 
-URL = "https://raw.githubusercontent.com/Build-Week-Med-Cabinet-2-MP/bw-med-cabinet-2-ml/data-generation/data/CLEAN_WMS_2020_05_24.csv"
+URL = "https://weed-data-bw.herokuapp.com/strains"
 
 
 class StrainRecommendation():
@@ -25,7 +25,7 @@ class StrainRecommendation():
         x_train: df with string label columns removed"""
 
     self.url = URL
-    self.df = pd.read_csv(self.url)
+    self.df = pd.read_json(self.url)
     self.x_train = self.df.drop(columns=["name","description"])
 
   def knn_predict(self, user_input, k=3):
